@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Dashboard</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #fff5f5; color: #333; margin: 0; padding: 15px; }
+    .header { font-size: 32px; font-weight: bold; color: #1c5270; }
+    .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .bus-tag { background: #1c5270; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- 時間 Header -->
+  <div class="header" id="clock">00:00:00</div>
+
+  <!-- 天氣區塊 -->
+  <div class="card">
+    <h3>林村即時與分時天氣</h3>
+    <div id="weather-temp">加載中...</div>
+  </div>
+
+  <!-- 巴士到站區塊 -->
+  <div class="card">
+    <h3>往太和 / 大埔方向</h3>
+    <div><span class="bus-tag">64K</span> 往太和 <span id="bus-eta" style="color:green; font-weight:bold;">-- 分鐘</span></div>
+  </div>
+
+  <!-- 電台播放器 -->
+  <div class="card">
+    <audio id="radio-player" controls style="width: 100%;">
+      <!-- RTHK Radio 1 直播源 -->
+      <source src="https://rthklive2-lh.akamaihd.net/i/rthk1_1@352586/master.m3u8" type="application/x-mpegURL">
+      您的瀏覽器不支援播放器
+    </audio>
+  </div>
+
+  <script>
+    // 1. 時鐘邏輯
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').innerText = now.toLocaleTimeString('zh-HK', { hour12: false });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. 獲取九巴 ETA 範例 (需替換為正確的 Stop ID 與 Route)
+    async function fetchBusETA() {
+      try {
+        // KMB Open API Endpoint
+        const res = await fetch('https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/YOUR_STOP_ID');
+        const data = await res.json();
+        // 篩選 64K 並更新 DOM
+      } catch (e) { console.error(e); }
+    }
+  </script>
+</body>
+</html>
