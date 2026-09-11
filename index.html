@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#d32f2f">
     <meta name="application-name" content="香港電台">
     
-    <title>香港收音機</title>
+    <title>香港電台</title>
 
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23d32f2f'/%3E%3Ctext x='90' y='108' font-family='Arial,Helvetica,sans-serif' font-size='42' font-weight='bold' fill='white' text-anchor='middle'%3ERTHK%3C/text%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23d32f2f'/%3E%3Ctext x='90' y='108' font-family='Arial,Helvetica,sans-serif' font-size='42' font-weight='bold' fill='white' text-anchor='middle'%3ERTHK%3C/text%3E%3C/svg%3E">
@@ -20,7 +20,7 @@
         const manifest = {
             name: "香港電台",
             short_name: "RTHK",
-            description: "香港收音機-簡易播放器",
+            description: "香港電台 + 新城電台簡易播放器",
             start_url: "./",
             display: "standalone",
             background_color: "#fff0f5",
@@ -38,7 +38,7 @@
 
     <style>
         :root {
-            --bg-color: #fff0f5; /* 預設粉紅 */
+            --bg-color: #fff0f5;
             --card-bg: #ffffff;
             --text-main: #1a1a1a;
             --text-sub: #555555;
@@ -46,12 +46,8 @@
             --accent-green: #2e7d32;
             --shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-        body.theme-blue {
-            --bg-color: #e8f4fc;
-        }
-        body.theme-pink {
-            --bg-color: #fff0f5;
-        }
+        body.theme-blue { --bg-color: #e8f4fc; }
+        body.theme-pink { --bg-color: #fff0f5; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
         body {
             margin: 0;
@@ -62,16 +58,13 @@
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
             transition: background-color 0.25s ease;
         }
-        header { text-align: center; margin-bottom: 12px; width: 100%; max-width: 520px; }
-        h1 { font-size: 24px; font-weight: 800; margin: 0 0 4px 0; color: var(--accent-red); }
-        .subtitle { font-size: 14px; color: var(--text-sub); font-weight: 600; }
-
-        /* 底色切換 */
-        .theme-switch {
+        .theme-bar {
+            width: 100%;
+            max-width: 520px;
             display: flex;
-            gap: 8px;
             justify-content: center;
-            margin-top: 10px;
+            gap: 8px;
+            margin-bottom: 14px;
         }
         .theme-btn {
             border: 2px solid #ddd;
@@ -93,7 +86,6 @@
             background: #e3f2fd;
             color: #1565c0;
         }
-
         .status-card {
             background: var(--card-bg); width: 100%; max-width: 520px; padding: 14px 16px;
             border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 14px;
@@ -103,10 +95,17 @@
         .status-title { font-size: 18px; font-weight: bold; margin-bottom: 2px; }
         .status-state { font-size: 14px; font-weight: bold; color: var(--text-sub); }
         .status-card.playing .status-state { color: var(--accent-green); }
+
+        /* 分類標題：加大約 1.5 倍（原 13px → 約 20px） */
         .section-title {
-            width: 100%; max-width: 520px; font-size: 13px; font-weight: 700;
-            color: #888; margin: 4px 0 8px 2px;
+            width: 100%;
+            max-width: 520px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #555;
+            margin: 6px 0 10px 2px;
         }
+
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -172,14 +171,10 @@
 </head>
 <body class="theme-pink">
 
-    <header>
-        <h1>香港電台 + 新城電台</h1>
-        <div class="subtitle">簡易播放器</div>
-        <div class="theme-switch">
-            <button class="theme-btn active-pink" id="btnPink" onclick="setTheme('pink')">🌸 粉紅</button>
-            <button class="theme-btn" id="btnBlue" onclick="setTheme('blue')">💙 淺藍</button>
-        </div>
-    </header>
+    <div class="theme-bar">
+        <button class="theme-btn active-pink" id="btnPink" onclick="setTheme('pink')">🌸 粉紅</button>
+        <button class="theme-btn" id="btnBlue" onclick="setTheme('blue')">💙 淺藍</button>
+    </div>
 
     <div class="status-card" id="statusCard">
         <div class="status-title" id="currentChannel">請選擇電台</div>
@@ -278,7 +273,6 @@
         const currentStateEl = document.getElementById('currentState');
         let activeId = null;
 
-        // 底色切換（會記住選擇）
         function setTheme(theme) {
             document.body.classList.remove('theme-pink', 'theme-blue');
             document.body.classList.add(theme === 'blue' ? 'theme-blue' : 'theme-pink');
@@ -287,7 +281,6 @@
             try { localStorage.setItem('radioTheme', theme); } catch (e) {}
         }
 
-        // 載入時還原上次選擇
         (function () {
             let saved = 'pink';
             try { saved = localStorage.getItem('radioTheme') || 'pink'; } catch (e) {}
