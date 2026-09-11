@@ -7,6 +7,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="香港電台">
     <title>香港電台 簡易播放器</title>
+
+    <!-- iOS 主畫面 App 圖示（RTHK 標誌圖片） -->
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4fb.png">
+    <!-- 若你有自己的 RTHK Logo 圖片網址，請替換上面的 href，例如： -->
+    <!-- <link rel="apple-touch-icon" href="https://your-domain.com/rthk-logo.png"> -->
+
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -273,7 +279,6 @@
         let activeId = null;
 
         function playChannel(e, id, name, desc, url) {
-            // 更新 UI 狀態
             document.querySelectorAll('.channel-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.play-icon').forEach(icon => icon.textContent = '▶');
 
@@ -285,11 +290,9 @@
             currentStateEl.textContent = "連線中，請稍候...";
             statusCard.classList.remove('playing');
 
-            // 設定音訊來源
             activeId = id;
             audio.src = url;
             
-            // iOS / 現代瀏覽器播放
             const playPromise = audio.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
@@ -317,7 +320,6 @@
             statusCard.classList.remove('playing');
         }
 
-        // 處理系統控制中心暫停
         audio.addEventListener('pause', () => {
             if (activeId && !audio.ended) {
                 currentStateEl.textContent = "已暫停";
