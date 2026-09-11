@@ -1,264 +1,110 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTHK 香港電台 1~5 台直播</title>
-    <!-- 引入 HLS.js 用於播放 m3u8 串流 -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
+<meta charset="UTF-8">
 
-        body {
-            background-color: #f5f5f7;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
 
-        header {
-            background-color: #0066cc;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+<title>RTHK 電台直播</title>
 
-        main {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 0 15px;
-            width: 100%;
-            flex: 1;
-        }
+<style>
+body {
+    margin: 0;
+    padding: 20px;
+    background: #f5f5f7;
+    font-family: Arial, sans-serif;
+}
 
-        .station-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+h1 {
+    text-align: center;
+}
 
-        .station-card {
-            background: white;
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-        }
+button {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    margin: 12px auto;
+    padding: 18px;
+    border: 0;
+    border-radius: 10px;
+    background: #0066cc;
+    color: white;
+    font-size: 18px;
+}
 
-        .station-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+button:active {
+    background: #004c99;
+}
 
-        .station-card.active {
-            border-color: #0066cc;
-            background-color: #e6f0fa;
-        }
-
-        .station-info h3 {
-            font-size: 1.1rem;
-            margin-bottom: 4px;
-            color: #1d1d1f;
-        }
-
-        .station-info p {
-            font-size: 0.85rem;
-            color: #6e6e73;
-        }
-
-        .play-btn {
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .play-btn:hover {
-            background-color: #0052a3;
-        }
-
-        .station-card.active .play-btn {
-            background-color: #e03131;
-        }
-
-        /* 底部播放面板 */
-        .player-bar {
-            position: sticky;
-            bottom: 0;
-            background: white;
-            border-top: 1px solid #ddd;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-        }
-
-        .current-station-title {
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        .current-station-status {
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        audio {
-            display: none; /* 隱藏原生播放器，使用自訂 UI 控制 */
-        }
-    </style>
+#status {
+    text-align: center;
+    margin: 20px;
+    color: #666;
+}
+</style>
 </head>
+
 <body>
 
-    <header>
-        <h1>RTHK 電台直播</h1>
-    </header>
+<h1>RTHK 電台直播</h1>
 
-    <main>
-        <div class="station-list" id="stationList"></div>
-    </main>
+<button onclick="openRadio(1)">
+    香港電台第一台
+</button>
 
-    <!-- 隱藏的 HTML5 音訊標籤 -->
-    <audio id="audioPlayer"></audio>
+<button onclick="openRadio(2)">
+    香港電台第二台
+</button>
 
-    <!-- 底部播放控制欄 -->
-    <div class="player-bar">
-        <div>
-            <div class="current-station-status" id="statusText">請選擇電台</div>
-            <div class="current-station-title" id="currentStationName">未播放</div>
-        </div>
-        <button class="play-btn" id="masterPlayBtn" style="display: none;" onclick="togglePlay()">暫停</button>
-    </div>
+<button onclick="openRadio(3)">
+    香港電台第三台
+</button>
 
-    <script>
-        // 香港電台 1~5 台 official 串流網址
-        const stations = [
-            { id: 1, name: "香港電台第一台", desc: "新聞、時事、知識", url: "https://rthklive1-lh.akamaihd.net/i/rthk1_1@167882/master.m3u8" },
-            { id: 2, name: "香港電台第二台", desc: "青年、娛樂、流行音樂", url: "https://rthklive2-lh.akamaihd.net/i/rthk2_1@167883/master.m3u8" },
-            { id: 3, name: "香港電台第三台", desc: "英語新聞及資訊 (English Station)", url: "https://rthklive3-lh.akamaihd.net/i/rthk3_1@167884/master.m3u8" },
-            { id: 4, name: "香港電台第四台", desc: "古典音樂及藝術 (Fine Music)", url: "https://rthklive4-lh.akamaihd.net/i/rthk4_1@167885/master.m3u8" },
-            { id: 5, name: "香港電台第五台", desc: "長者、文化及教育", url: "https://rthklive5-lh.akamaihd.net/i/rthk5_1@167886/master.m3u8" }
-        ];
+<button onclick="openRadio(4)">
+    香港電台第四台
+</button>
 
-        const audio = document.getElementById('audioPlayer');
-        const stationList = document.getElementById('stationList');
-        const currentStationName = document.getElementById('currentStationName');
-        const statusText = document.getElementById('statusText');
-        const masterPlayBtn = document.getElementById('masterPlayBtn');
+<button onclick="openRadio(5)">
+    香港電台第五台
+</button>
 
-        let hls = new Hls();
-        let currentStationId = null;
+<div id="status">
+    請選擇電台
+</div>
 
-        // 渲染電台列表
-        function renderStations() {
-            stationList.innerHTML = '';
-            stations.forEach(station => {
-                const isActive = station.id === currentStationId;
-                const isPlaying = isActive && !audio.paused;
+<script>
 
-                const card = document.createElement('div');
-                card.className = `station-card ${isActive ? 'active' : ''}`;
-                card.onclick = () => selectStation(station);
+function openRadio(channel) {
 
-                card.innerHTML = `
-                    <div class="station-info">
-                        <h3>${station.name}</h3>
-                        <p>${station.desc}</p>
-                    </div>
-                    <button class="play-btn">
-                        ${isPlaying ? '暫停' : '播放'}
-                    </button>
-                `;
-                stationList.appendChild(card);
-            });
-        }
+    document.getElementById("status").innerText =
+        "正在開啟 RTHK 官方直播...";
 
-        // 切換播放電台
-        function selectStation(station) {
-            if (currentStationId === station.id) {
-                togglePlay();
-                return;
-            }
+    /*
+     * RTHK 官方直播播放器
+     *
+     * radio1 = 第一台
+     * radio2 = 第二台
+     * radio3 = 第三台
+     * radio4 = 第四台
+     * radio5 = 第五台
+     */
 
-            currentStationId = station.id;
-            currentStationName.innerText = station.name;
-            statusText.innerText = "載入串流中...";
-            masterPlayBtn.style.display = "block";
+    var url =
+        "https://programme.rthk.hk/channel/radio/player_live_txt.php?lang=chi";
 
-            // 使用 HLS.js 載入 m3u8
-            if (Hls.isSupported()) {
-                hls.destroy(); // 釋放舊連線
-                hls = new Hls();
-                hls.loadSource(station.url);
-                hls.attachMedia(audio);
-                hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                    audio.play();
-                });
-            } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
-                // 原生支援 HLS (例如 Safari / iOS)
-                audio.src = station.url;
-                audio.play();
-            }
+    /*
+     * 舊版 Safari 不適合自行解析 HLS，
+     * 直接交給 RTHK 官方播放器處理。
+     */
 
-            renderStations();
-        }
+    window.location.href = url;
+}
 
-        // 播放 / 暫停 控制
-        function togglePlay() {
-            if (!currentStationId) return;
+</script>
 
-            if (audio.paused) {
-                audio.play();
-            } else {
-                audio.pause();
-            }
-            renderStations();
-            updateMasterBtn();
-        }
-
-        function updateMasterBtn() {
-            if (audio.paused) {
-                masterPlayBtn.innerText = "播放";
-                statusText.innerText = "已暫停";
-            } else {
-                masterPlayBtn.innerText = "暫停";
-                statusText.innerText = "正在直播";
-            }
-        }
-
-        // 監聽音訊事件
-        audio.addEventListener('play', () => {
-            statusText.innerText = "正在直播";
-            updateMasterBtn();
-            renderStations();
-        });
-
-        audio.addEventListener('pause', () => {
-            statusText.innerText = "已暫停";
-            updateMasterBtn();
-            renderStations();
-        });
-
-        // 初始化
-        renderStations();
-    </script>
 </body>
 </html>
-
