@@ -2,226 +2,387 @@
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>香港電台收音機</title>
-    <!-- iOS 全螢幕與 App 圖示設定 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="香港電台">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Helvetica Neue", sans-serif;
-            background-color: #121212;
-            color: #FFFFFF;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 100vh;
-            padding: 20px 15px 40px 15px;
-        }
-
-        header {
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 32px;
-            font-weight: bold;
-            color: #FFD700; /* 金黃色標題，高對比易讀 */
-            letter-spacing: 2px;
-        }
-
-        .status-box {
-            font-size: 24px;
-            margin-top: 8px;
-            color: #E0E0E0;
-            font-weight: 500;
-        }
-
-        /* 電台選擇按鈕區 */
-        .station-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            width: 100%;
-            max-width: 360px;
-        }
-
-        .station-btn {
-            background-color: #2C2C2E;
-            border: 3px solid #444;
-            border-radius: 16px;
-            padding: 16px;
-            font-size: 26px;
-            font-weight: bold;
-            color: #FFFFFF;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .station-btn:active {
-            transform: scale(0.98);
-            background-color: #3A3A3C;
-        }
-
-        /* 選中狀態 */
-        .station-btn.active {
-            background-color: #007AFF;
-            border-color: #66B2FF;
-            color: #FFFFFF;
-        }
-
-        .station-sub {
-            font-size: 16px;
-            font-weight: normal;
-            color: #AAA;
-        }
-
-        .station-btn.active .station-sub {
-            color: #E0E0E0;
-        }
-
-        /* 主播放/停止大按鈕 */
-        .controls {
-            width: 100%;
-            max-width: 360px;
-            margin-top: 15px;
-        }
-
-        .play-btn {
-            width: 100%;
-            padding: 20px;
-            font-size: 30px;
-            font-weight: bold;
-            border: none;
-            border-radius: 20px;
-            background-color: #34C759; /* 綠色播放按鈕 */
-            color: #FFFFFF;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-        }
-
-        .play-btn.playing {
-            background-color: #FF3B30; /* 紅色停止按鈕 */
-        }
-
-        .play-btn:active {
-            transform: scale(0.97);
-        }
-    </style>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="香港電台">
+<title>香港電台收音機</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+    body {
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            "PingFang HK",
+            "Helvetica Neue",
+            sans-serif;
+        background: #121212;
+        color: #fff;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 15px 40px;
+    }
+    header {
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    h1 {
+        font-size: 32px;
+        font-weight: bold;
+        color: #FFD700;
+        letter-spacing: 2px;
+    }
+    .status-box {
+        font-size: 20px;
+        margin-top: 10px;
+        color: #E0E0E0;
+        font-weight: 500;
+        min-height: 28px;
+    }
+    .station-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        width: 100%;
+        max-width: 360px;
+    }
+    .station-btn {
+        width: 100%;
+        background: #2C2C2E;
+        border: 3px solid #444;
+        border-radius: 16px;
+        padding: 16px;
+        font-size: 26px;
+        font-weight: bold;
+        color: #fff;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    .station-btn:active {
+        transform: scale(.98);
+        background: #3A3A3C;
+    }
+    .station-btn.active {
+        background: #007AFF;
+        border-color: #66B2FF;
+    }
+    .station-sub {
+        font-size: 16px;
+        font-weight: normal;
+        color: #AAA;
+    }
+    .station-btn.active .station-sub {
+        color: #E0E0E0;
+    }
+    .controls {
+        width: 100%;
+        max-width: 360px;
+        margin-top: 18px;
+    }
+    .play-btn {
+        width: 100%;
+        padding: 20px;
+        font-size: 30px;
+        font-weight: bold;
+        border: none;
+        border-radius: 20px;
+        background: #34C759;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0,0,0,.5);
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    .play-btn.playing {
+        background: #FF3B30;
+    }
+    .play-btn:active {
+        transform: scale(.97);
+    }
+    .error {
+        color: #FF453A;
+    }
+</style>
 </head>
 <body>
-
-    <header>
-        <h1>香港電台</h1>
-        <div class="status-box" id="status">請選擇電台</div>
-    </header>
-
-    <!-- 1至5台 選擇按鈕 -->
-    <div class="station-grid">
-        <button class="station-btn" onclick="selectStation(1, 'https://rthk-live.akamaized.net/hls/live/2032014/radio1/master.m3u8', '第一台 (新聞/時事)')">
-            <span>第一台</span>
-            <span class="station-sub">新聞/時事</span>
-        </button>
-        <button class="station-btn" onclick="selectStation(2, 'https://rthk-live.akamaized.net/hls/live/2032015/radio2/master.m3u8', '第二台 (娛樂/音樂)')">
-            <span>第二台</span>
-            <span class="station-sub">娛樂/音樂</span>
-        </button>
-        <button class="station-btn" onclick="selectStation(3, 'https://rthk-live.akamaized.net/hls/live/2032016/radio3/master.m3u8', '第三台 (英文台)')">
-            <span>第三台</span>
-            <span class="station-sub">英文台</span>
-        </button>
-        <button class="station-btn" onclick="selectStation(4, 'https://rthk-live.akamaized.net/hls/live/2032017/radio4/master.m3u8', '第四台 (古典音樂)')">
-            <span>第四台</span>
-            <span class="station-sub">古典音樂</span>
-        </button>
-        <button class="station-btn" onclick="selectStation(5, 'https://rthk-live.akamaized.net/hls/live/2032018/radio5/master.m3u8', '第五台 (長者/戲曲)')">
-            <span>第五台</span>
-            <span class="station-sub">長者/戲曲</span>
-        </button>
-    </div>
-
-    <!-- 播放與停止控制 -->
-    <div class="controls">
-        <button class="play-btn" id="playBtn" onclick="togglePlay()">播放</button>
-    </div>
-
-    <!-- 隱藏的音訊播放器 -->
-    <audio id="audioPlayer"></audio>
-
-    <script>
-        const audio = document.getElementById('audioPlayer');
-        const playBtn = document.getElementById('playBtn');
-        const statusText = document.getElementById('status');
-        const buttons = document.querySelectorAll('.station-btn');
-
-        let currentUrl = '';
-        let currentName = '';
-
-        // 選擇電台
-        function selectStation(number, url, name) {
-            currentUrl = url;
-            currentName = name;
-
-            // 更新按鈕高亮 UI
-            buttons.forEach((btn, index) => {
-                if (index === number - 1) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            // 更換音訊來源並播放
-            audio.src = currentUrl;
-            audio.play();
-            updateUI(true);
+<header>
+    <h1>香港電台</h1>
+    <div class="status-box" id="status">請選擇電台</div>
+</header>
+<div class="station-grid">
+<button class="station-btn"
+        onclick="selectStation(1, '第一台 (新聞/時事)')">
+    <span>第一台</span>
+    <span class="station-sub">新聞/時事</span>
+</button>
+<button class="station-btn"
+        onclick="selectStation(2, '第二台 (娛樂/音樂)')">
+    <span>第二台</span>
+    <span class="station-sub">娛樂/音樂</span>
+</button>
+<button class="station-btn"
+        onclick="selectStation(3, '第三台 (英文台)')">
+    <span>第三台</span>
+    <span class="station-sub">英文台</span>
+</button>
+<button class="station-btn"
+        onclick="selectStation(4, '第四台 (古典音樂)')">
+    <span>第四台</span>
+    <span class="station-sub">古典音樂</span>
+</button>
+<button class="station-btn"
+        onclick="selectStation(5, '第五台 (長者/戲曲)')">
+    <span>第五台</span>
+    <span class="station-sub">長者/戲曲</span>
+</button>
+</div>
+<div class="controls">
+    <button class="play-btn"
+            id="playBtn"
+            onclick="togglePlay()">
+        播放
+    </button>
+</div>
+<!--
+    使用 iOS Safari 原生 HLS。
+    不使用 HLS.js。
+-->
+<script>
+const audio = document.getElementById("audioPlayer");
+const playBtn = document.getElementById("playBtn");
+const statusText = document.getElementById("status");
+const buttons = document.querySelectorAll(".station-btn");
+let currentStation = 0;
+let currentName = "";
+let isLoading = false;
+/*
+ * RTHK 直播來源
+ *
+ * 注意：
+ * RTHK 的直播 CDN/串流地址可能會更換。
+ *
+ * 這裡採用目前可使用的 RTHK HLS 格式。
+ */
+const stations = {
+    1: {
+        name: "第一台 (新聞/時事)",
+        url:
+        "https://rthkradio1-live.akamaized.net/hls/live/2035313/radio1/index_64_a.m3u8"
+    },
+    2: {
+        name: "第二台 (娛樂/音樂)",
+        url:
+        "https://rthkradio2-live.akamaized.net/hls/live/2035314/radio2/index_64_a.m3u8"
+    },
+    3: {
+        name: "第三台 (英文台)",
+        url:
+        "https://rthkradio3-live.akamaized.net/hls/live/2035315/radio3/index_64_a.m3u8"
+    },
+    4: {
+        name: "第四台 (古典音樂)",
+        url:
+        "https://rthkradio4-live.akamaized.net/hls/live/2035316/radio4/index_64_a.m3u8"
+    },
+    5: {
+        name: "第五台 (長者/戲曲)",
+        url:
+        "https://rthkradio5-live.akamaized.net/hls/live/2035317/radio5/index_64_a.m3u8"
+    }
+};
+/* 選擇電台 */
+async function selectStation(number, name) {
+    const station = stations[number];
+    if (!station) {
+        return;
+    }
+    currentStation = number;
+    currentName = name;
+    /* 更新按鈕 */
+    buttons.forEach((btn, index) => {
+        if (index === number - 1) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
         }
-
-        // 切換播放/停止
-        function togglePlay() {
-            if (!currentUrl) {
-                // 若未選擇，預設開啟第一台
-                selectStation(1, 'https://rthk-live.akamaized.net/hls/live/2032014/radio1/master.m3u8', '第一台 (新聞/時事)');
-                return;
-            }
-
-            if (audio.paused) {
-                audio.play();
-                updateUI(true);
-            } else {
-                audio.pause();
-                updateUI(false);
-            }
+    });
+    /* 停止舊串流 */
+    audio.pause();
+    /*
+     * 清除舊來源
+     *
+     * iOS Safari 對更換 HLS source
+     * 使用 load() 會比較穩定。
+     */
+    audio.removeAttribute("src");
+    audio.load();
+    isLoading = true;
+    statusText.classList.remove("error");
+    statusText.textContent =
+        "正在載入：" + currentName;
+    playBtn.textContent = "載入中…";
+    playBtn.classList.remove("playing");
+    /*
+     * 設定新的 HLS
+     */
+    audio.src = station.url;
+    audio.load();
+    try {
+        /*
+         * 必須由使用者點擊觸發，
+         * iOS Safari 才允許播放。
+         */
+        await audio.play();
+        isLoading = false;
+        statusText.textContent =
+            "正在播放：" + currentName;
+        playBtn.textContent = "停止播放";
+        playBtn.classList.add("playing");
+    } catch (error) {
+        isLoading = false;
+        console.error("RTHK 播放失敗:", error);
+        statusText.classList.add("error");
+        statusText.textContent =
+            "無法播放，請稍後再試";
+        playBtn.textContent = "重新播放";
+        playBtn.classList.remove("playing");
+    }
+}
+/* 播放 / 停止 */
+async function togglePlay() {
+    /* 尚未選擇電台 */
+    if (!currentStation) {
+        await selectStation(
+            1,
+            stations[1].name
+        );
+        return;
+    }
+    /* 正在播放 → 停止 */
+    if (!audio.paused) {
+        audio.pause();
+        statusText.classList.remove("error");
+        statusText.textContent =
+            "已停止播放";
+        playBtn.textContent =
+            "開始播放";
+        playBtn.classList.remove("playing");
+        return;
+    }
+    /* 重新播放 */
+    isLoading = true;
+    statusText.classList.remove("error");
+    statusText.textContent =
+        "正在連接：" + currentName;
+    playBtn.textContent =
+        "載入中…";
+    try {
+        await audio.play();
+        isLoading = false;
+        statusText.textContent =
+            "正在播放：" + currentName;
+        playBtn.textContent =
+            "停止播放";
+        playBtn.classList.add("playing");
+    } catch (error) {
+        isLoading = false;
+        console.error("播放錯誤:", error);
+        statusText.classList.add("error");
+        statusText.textContent =
+            "播放失敗，請重新按播放";
+        playBtn.textContent =
+            "重新播放";
+        playBtn.classList.remove("playing");
+    }
+}
+/*
+ * audio 事件
+ */
+audio.addEventListener("loadstart", function () {
+    if (currentStation) {
+        statusText.textContent =
+            "正在連接：" + currentName;
+    }
+});
+audio.addEventListener("waiting", function () {
+    if (currentStation) {
+        statusText.textContent =
+            "正在載入直播串流…";
+    }
+});
+audio.addEventListener("playing", function () {
+    if (currentStation) {
+        isLoading = false;
+        statusText.classList.remove("error");
+        statusText.textContent =
+            "正在播放：" + currentName;
+        playBtn.textContent =
+            "停止播放";
+        playBtn.classList.add("playing");
+    }
+});
+audio.addEventListener("pause", function () {
+    /*
+     * 避免 load / 切換電台時
+     * 錯誤修改 UI。
+     */
+    if (!isLoading && currentStation) {
+        playBtn.textContent =
+            "開始播放";
+        playBtn.classList.remove("playing");
+    }
+});
+audio.addEventListener("error", function () {
+    console.error(
+        "Audio error:",
+        audio.error
+    );
+    isLoading = false;
+    statusText.classList.add("error");
+    statusText.textContent =
+        "直播串流暫時無法連接";
+    playBtn.textContent =
+        "重新播放";
+    playBtn.classList.remove("playing");
+});
+/*
+ * 如果串流長時間沒有資料，
+ * 顯示較清楚的錯誤。
+ */
+let loadTimer;
+audio.addEventListener("loadstart", function () {
+    clearTimeout(loadTimer);
+    loadTimer = setTimeout(function () {
+        if (
+            currentStation &&
+            audio.paused &&
+            isLoading
+        ) {
+            statusText.classList.add("error");
+            statusText.textContent =
+                "直播連線逾時，請重新播放";
+            playBtn.textContent =
+                "重新播放";
+            isLoading = false;
         }
-
-        // 更新狀態文字與按鈕顏色
-        function updateUI(isPlaying) {
-            if (isPlaying) {
-                statusText.innerText = '正在播放：' + currentName;
-                playBtn.innerText = '停止播放';
-                playBtn.classList.add('playing');
-            } else {
-                statusText.innerText = '已停止播放';
-                playBtn.innerText = '開始播放';
-                playBtn.classList.remove('playing');
-            }
-        }
-    </script>
+    }, 15000);
+});
+</script>
 </body>
 </html>
-
