@@ -71,7 +71,6 @@
             width: 100%; max-width: 520px; font-size: 13px; font-weight: 700;
             color: #888; margin: 4px 0 8px 2px;
         }
-        /* 一行兩個 */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -80,25 +79,49 @@
             max-width: 520px;
             margin-bottom: 12px;
         }
+        /* 台名在左、紅色按鈕在右 */
         .channel-btn {
-            background: var(--card-bg); border: 2.5px solid #e0e0e0; border-radius: 14px;
-            padding: 12px 10px; display: flex; flex-direction: column; align-items: center;
-            justify-content: center; cursor: pointer; box-shadow: var(--shadow);
-            text-align: center; min-height: 88px;
+            background: var(--card-bg);
+            border: 2.5px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 12px 12px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            text-align: left;
+            min-height: 72px;
             transition: transform 0.1s, border-color 0.2s, background 0.2s;
         }
         .channel-btn:active { transform: scale(0.97); }
         .channel-btn.active { border-color: var(--accent-red); background: #fff8f8; }
         .channel-btn.link-btn { border-style: dashed; }
-        .channel-name { font-size: 17px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; }
-        .channel-desc { font-size: 11px; color: var(--text-sub); font-weight: 500; line-height: 1.3; }
+        .channel-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            padding-right: 8px;
+        }
+        .channel-name { font-size: 16px; font-weight: 800; line-height: 1.2; }
+        .channel-desc { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-top: 3px; line-height: 1.3; }
         .play-icon {
-            width: 32px; height: 32px; border-radius: 50%; background: var(--accent-red);
-            color: white; display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: bold; margin-top: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-red);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
         }
         .channel-btn.active .play-icon { background: var(--accent-green); }
-        .channel-btn.link-btn .play-icon { background: #666; font-size: 13px; }
+        .channel-btn.link-btn .play-icon { background: #666; font-size: 14px; }
         .stop-btn {
             width: 100%; max-width: 520px; padding: 14px; font-size: 18px; font-weight: bold;
             color: white; background: #555; border: none; border-radius: 14px;
@@ -127,44 +150,57 @@
     <div class="section-title">香港電台 RTHK</div>
     <div class="grid-container">
         <button class="channel-btn" onclick="playChannel(event, 1, '第一台', 'https://rthkradio1-live.akamaized.net/hls/live/2035313/radio1/master.m3u8')">
-            <span class="channel-name">第一台</span>
-            <span class="channel-desc">新聞與時事</span>
+            <div class="channel-info">
+                <span class="channel-name">第一台</span>
+                <span class="channel-desc">新聞與時事</span>
+            </div>
             <div class="play-icon" id="icon-1">▶</div>
         </button>
         <button class="channel-btn" onclick="playChannel(event, 2, '第二台', 'https://rthkradio2-live.akamaized.net/hls/live/2040078/radio2/master.m3u8')">
-            <span class="channel-name">第二台</span>
-            <span class="channel-desc">流行音樂</span>
+            <div class="channel-info">
+                <span class="channel-name">第二台</span>
+                <span class="channel-desc">流行音樂</span>
+            </div>
             <div class="play-icon" id="icon-2">▶</div>
         </button>
         <button class="channel-btn" onclick="playChannel(event, 3, '第三台', 'https://rthkradio3-live.akamaized.net/hls/live/2040079/radio3/master.m3u8')">
-            <span class="channel-name">第三台</span>
-            <span class="channel-desc">英文台</span>
+            <div class="channel-info">
+                <span class="channel-name">第三台</span>
+                <span class="channel-desc">英文台</span>
+            </div>
             <div class="play-icon" id="icon-3">▶</div>
         </button>
         <button class="channel-btn" onclick="playChannel(event, 4, '第四台', 'https://rthkradio4-live.akamaized.net/hls/live/2040080/radio4/master.m3u8')">
-            <span class="channel-name">第四台</span>
-            <span class="channel-desc">古典音樂</span>
+            <div class="channel-info">
+                <span class="channel-name">第四台</span>
+                <span class="channel-desc">古典音樂</span>
+            </div>
             <div class="play-icon" id="icon-4">▶</div>
         </button>
         <button class="channel-btn" onclick="playChannel(event, 5, '第五台', 'https://rthkradio5-live.akamaized.net/hls/live/2040081/radio5/master.m3u8')">
-            <span class="channel-name">第五台</span>
-            <span class="channel-desc">長者與戲曲</span>
+            <div class="channel-info">
+                <span class="channel-name">第五台</span>
+                <span class="channel-desc">長者與戲曲</span>
+            </div>
             <div class="play-icon" id="icon-5">▶</div>
         </button>
-        <!-- 空位可留空，或之後加其他台 -->
         <div></div>
     </div>
 
     <div class="section-title">新城電台 Metro</div>
     <div class="grid-container">
         <button class="channel-btn" onclick="playChannel(event, 6, '知訊台 997', 'https://1603884249.rsc.cdn77.org/1603884249/index.m3u8')">
-            <span class="channel-name">知訊台 997</span>
-            <span class="channel-desc">資訊・音樂</span>
+            <div class="channel-info">
+                <span class="channel-name">知訊台 997</span>
+                <span class="channel-desc">資訊・音樂</span>
+            </div>
             <div class="play-icon" id="icon-6">▶</div>
         </button>
         <button class="channel-btn" onclick="playChannel(event, 7, '財經台 104', 'https://1716664847.rsc.cdn77.org/1716664847/index.m3u8')">
-            <span class="channel-name">財經台 104</span>
-            <span class="channel-desc">財經・股市</span>
+            <div class="channel-info">
+                <span class="channel-name">財經台 104</span>
+                <span class="channel-desc">財經・股市</span>
+            </div>
             <div class="play-icon" id="icon-7">▶</div>
         </button>
     </div>
@@ -172,13 +208,17 @@
     <div class="section-title">商業電台（開啟官方網頁）</div>
     <div class="grid-container">
         <button class="channel-btn link-btn" onclick="openOfficial('https://www.881903.com/live/881')">
-            <span class="channel-name">雷霆881</span>
-            <span class="channel-desc">官方直播頁</span>
+            <div class="channel-info">
+                <span class="channel-name">雷霆881</span>
+                <span class="channel-desc">官方直播頁</span>
+            </div>
             <div class="play-icon">↗</div>
         </button>
         <button class="channel-btn link-btn" onclick="openOfficial('https://www.881903.com/live/903')">
-            <span class="channel-name">叱咤903</span>
-            <span class="channel-desc">官方直播頁</span>
+            <div class="channel-info">
+                <span class="channel-name">叱咤903</span>
+                <span class="channel-desc">官方直播頁</span>
+            </div>
             <div class="play-icon">↗</div>
         </button>
     </div>
@@ -187,7 +227,7 @@
 
     <div class="instructions">
         iPhone：Safari 分享 →「加入主畫面」　｜　Android：Chrome 選單 →「加入主畫面」
-        <div class="note">商台因官方保護無法直接嵌入，點擊會開啟 881903.com</div>
+        <div class="note">點商台會先停止本頁播放，再開啟 881903.com</div>
     </div>
 
     <audio id="audioPlayer" playsinline preload="none"></audio>
@@ -228,7 +268,11 @@
             }
         }
 
+        // 選商台：先停止港台／新城，再開官方頁
         function openOfficial(url) {
+            stopAudio();
+            currentChannelEl.textContent = "已開啟商台網頁";
+            currentStateEl.textContent = "本頁播放已停止";
             window.open(url, '_blank');
         }
 
