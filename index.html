@@ -1,110 +1,226 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>香港電台收音機</title>
+    <!-- iOS 全螢幕與 App 圖示設定 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="香港電台">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Helvetica Neue", sans-serif;
+            background-color: #121212;
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            padding: 20px 15px 40px 15px;
+        }
 
-<title>RTHK 電台直播</title>
+        header {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
 
-<style>
-body {
-    margin: 0;
-    padding: 20px;
-    background: #f5f5f7;
-    font-family: Arial, sans-serif;
-}
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFD700; /* 金黃色標題，高對比易讀 */
+            letter-spacing: 2px;
+        }
 
-h1 {
-    text-align: center;
-}
+        .status-box {
+            font-size: 24px;
+            margin-top: 8px;
+            color: #E0E0E0;
+            font-weight: 500;
+        }
 
-button {
-    display: block;
-    width: 100%;
-    max-width: 500px;
-    margin: 12px auto;
-    padding: 18px;
-    border: 0;
-    border-radius: 10px;
-    background: #0066cc;
-    color: white;
-    font-size: 18px;
-}
+        /* 電台選擇按鈕區 */
+        .station-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            width: 100%;
+            max-width: 360px;
+        }
 
-button:active {
-    background: #004c99;
-}
+        .station-btn {
+            background-color: #2C2C2E;
+            border: 3px solid #444;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-#status {
-    text-align: center;
-    margin: 20px;
-    color: #666;
-}
-</style>
+        .station-btn:active {
+            transform: scale(0.98);
+            background-color: #3A3A3C;
+        }
+
+        /* 選中狀態 */
+        .station-btn.active {
+            background-color: #007AFF;
+            border-color: #66B2FF;
+            color: #FFFFFF;
+        }
+
+        .station-sub {
+            font-size: 16px;
+            font-weight: normal;
+            color: #AAA;
+        }
+
+        .station-btn.active .station-sub {
+            color: #E0E0E0;
+        }
+
+        /* 主播放/停止大按鈕 */
+        .controls {
+            width: 100%;
+            max-width: 360px;
+            margin-top: 15px;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            background-color: #34C759; /* 綠色播放按鈕 */
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+        .play-btn.playing {
+            background-color: #FF3B30; /* 紅色停止按鈕 */
+        }
+
+        .play-btn:active {
+            transform: scale(0.97);
+        }
+    </style>
 </head>
-
 <body>
 
-<h1>RTHK 電台直播</h1>
+    <header>
+        <h1>香港電台</h1>
+        <div class="status-box" id="status">請選擇電台</div>
+    </header>
 
-<button onclick="openRadio(1)">
-    香港電台第一台
-</button>
+    <!-- 1至5台 選擇按鈕 -->
+    <div class="station-grid">
+        <button class="station-btn" onclick="selectStation(1, 'https://rthk-live.akamaized.net/hls/live/2032014/radio1/master.m3u8', '第一台 (新聞/時事)')">
+            <span>第一台</span>
+            <span class="station-sub">新聞/時事</span>
+        </button>
+        <button class="station-btn" onclick="selectStation(2, 'https://rthk-live.akamaized.net/hls/live/2032015/radio2/master.m3u8', '第二台 (娛樂/音樂)')">
+            <span>第二台</span>
+            <span class="station-sub">娛樂/音樂</span>
+        </button>
+        <button class="station-btn" onclick="selectStation(3, 'https://rthk-live.akamaized.net/hls/live/2032016/radio3/master.m3u8', '第三台 (英文台)')">
+            <span>第三台</span>
+            <span class="station-sub">英文台</span>
+        </button>
+        <button class="station-btn" onclick="selectStation(4, 'https://rthk-live.akamaized.net/hls/live/2032017/radio4/master.m3u8', '第四台 (古典音樂)')">
+            <span>第四台</span>
+            <span class="station-sub">古典音樂</span>
+        </button>
+        <button class="station-btn" onclick="selectStation(5, 'https://rthk-live.akamaized.net/hls/live/2032018/radio5/master.m3u8', '第五台 (長者/戲曲)')">
+            <span>第五台</span>
+            <span class="station-sub">長者/戲曲</span>
+        </button>
+    </div>
 
-<button onclick="openRadio(2)">
-    香港電台第二台
-</button>
+    <!-- 播放與停止控制 -->
+    <div class="controls">
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">播放</button>
+    </div>
 
-<button onclick="openRadio(3)">
-    香港電台第三台
-</button>
+    <!-- 隱藏的音訊播放器 -->
+    <audio id="audioPlayer"></audio>
 
-<button onclick="openRadio(4)">
-    香港電台第四台
-</button>
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const statusText = document.getElementById('status');
+        const buttons = document.querySelectorAll('.station-btn');
 
-<button onclick="openRadio(5)">
-    香港電台第五台
-</button>
+        let currentUrl = '';
+        let currentName = '';
 
-<div id="status">
-    請選擇電台
-</div>
+        // 選擇電台
+        function selectStation(number, url, name) {
+            currentUrl = url;
+            currentName = name;
 
-<script>
+            // 更新按鈕高亮 UI
+            buttons.forEach((btn, index) => {
+                if (index === number - 1) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
 
-function openRadio(channel) {
+            // 更換音訊來源並播放
+            audio.src = currentUrl;
+            audio.play();
+            updateUI(true);
+        }
 
-    document.getElementById("status").innerText =
-        "正在開啟 RTHK 官方直播...";
+        // 切換播放/停止
+        function togglePlay() {
+            if (!currentUrl) {
+                // 若未選擇，預設開啟第一台
+                selectStation(1, 'https://rthk-live.akamaized.net/hls/live/2032014/radio1/master.m3u8', '第一台 (新聞/時事)');
+                return;
+            }
 
-    /*
-     * RTHK 官方直播播放器
-     *
-     * radio1 = 第一台
-     * radio2 = 第二台
-     * radio3 = 第三台
-     * radio4 = 第四台
-     * radio5 = 第五台
-     */
+            if (audio.paused) {
+                audio.play();
+                updateUI(true);
+            } else {
+                audio.pause();
+                updateUI(false);
+            }
+        }
 
-    var url =
-        "https://programme.rthk.hk/channel/radio/player_live_txt.php?lang=chi";
-
-    /*
-     * 舊版 Safari 不適合自行解析 HLS，
-     * 直接交給 RTHK 官方播放器處理。
-     */
-
-    window.location.href = url;
-}
-
-</script>
-
+        // 更新狀態文字與按鈕顏色
+        function updateUI(isPlaying) {
+            if (isPlaying) {
+                statusText.innerText = '正在播放：' + currentName;
+                playBtn.innerText = '停止播放';
+                playBtn.classList.add('playing');
+            } else {
+                statusText.innerText = '已停止播放';
+                playBtn.innerText = '開始播放';
+                playBtn.classList.remove('playing');
+            }
+        }
+    </script>
 </body>
 </html>
