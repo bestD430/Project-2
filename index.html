@@ -3,339 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="香港電台">
+    
+    <!-- Android / 通用 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#d32f2f">
+    <meta name="application-name" content="香港電台">
+    
     <title>香港電台 簡易播放器</title>
 
-    <!-- iOS 主畫面 App 圖示（RTHK 標誌圖片） -->
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4fb.png">
-    <!-- 若你有自己的 RTHK Logo 圖片網址，請替換上面的 href，例如： -->
-    <!-- <link rel="apple-touch-icon" href="https://zh.hkradio.wikia.com/rthk-logo.png"> -->
+    <!-- Favicon + iOS 主畫面圖示（內嵌 SVG，無需額外檔案） -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23d32f2f'/%3E%3Ctext x='90' y='108' font-family='Arial,Helvetica,sans-serif' font-size='42' font-weight='bold' fill='white' text-anchor='middle'%3ERTHK%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23d32f2f'/%3E%3Ctext x='90' y='108' font-family='Arial,Helvetica,sans-serif' font-size='42' font-weight='bold' fill='white' text-anchor='middle'%3ERTHK%3C/text%3E%3C/svg%3E">
+
+    <!-- Android Manifest（用 Blob 動態產生） -->
+    <script>
+        const manifest = {
+            name: "香港電台",
+            short_name: "RTHK",
+            description: "香港電台簡易播放器",
+            start_url: "./",
+            display: "standalone",
+            background_color: "#f4f6f8",
+            theme_color: "#d32f2f",
+            icons: [{
+                src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23d32f2f'/%3E%3Ctext x='90' y='108' font-family='Arial,Helvetica,sans-serif' font-size='42' font-weight='bold' fill='white' text-anchor='middle'%3ERTHK%3C/text%3E%3C/svg%3E",
+                sizes: "180x180",
+                type: "image/svg+xml",
+                purpose: "any maskable"
+            }]
+        };
+        const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+        const manifestURL = URL.createObjectURL(blob);
+        document.write('<link rel="manifest" href="' + manifestURL + '">');
+    </script>
 
     <style>
-        :root {
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --text-main: #1a1a1a;
-            --text-sub: #555555;
-            --accent-red: #d32f2f;
-            --accent-green: #2e7d32;
-            --shadow: 0 6px 16px rgba(0,0,0,0.08);
-            --active-border: #d32f2f;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-
-        body {
-            margin: 0;
-            padding: calc(env(safe-area-inset-top) + 20px) 16px calc(env(safe-area-inset-bottom) + 20px) 16px;
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        h1 {
-            font-size: 32px;
-            font-weight: 800;
-            margin: 0 0 8px 0;
-            color: var(--accent-red);
-            letter-spacing: 1px;
-        }
-
-        .subtitle {
-            font-size: 18px;
-            color: var(--text-sub);
-            font-weight: 600;
-        }
-
-        .status-card {
-            background-color: var(--card-bg);
-            width: 100%;
-            max-width: 500px;
-            padding: 18px 20px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            text-align: center;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .status-card.playing {
-            border-color: var(--accent-green);
-            background-color: #f1f8e9;
-        }
-
-        .status-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--text-main);
-            margin-bottom: 6px;
-        }
-
-        .status-state {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--text-sub);
-        }
-
-        .status-card.playing .status-state {
-            color: var(--accent-green);
-        }
-
-        .grid-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
-            max-width: 500px;
-            margin-bottom: 24px;
-        }
-
-        .channel-btn {
-            background: var(--card-bg);
-            border: 3px solid #e0e0e0;
-            border-radius: 24px;
-            padding: 18px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: transform 0.1s ease, border-color 0.2s ease, background-color 0.2s ease;
-            width: 100%;
-            text-align: left;
-        }
-
-        .channel-btn:active {
-            transform: scale(0.98);
-        }
-
-        .channel-btn.active {
-            border-color: var(--accent-red);
-            background-color: #fff8f8;
-        }
-
-        .channel-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .channel-name {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--text-main);
-            line-height: 1.2;
-        }
-
-        .channel-desc {
-            font-size: 16px;
-            color: var(--text-sub);
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        .play-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background-color: var(--accent-red);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: bold;
-            flex-shrink: 0;
-            margin-left: 12px;
-        }
-
-        .channel-btn.active .play-icon {
-            background-color: var(--accent-green);
-        }
-
-        .controls {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .stop-btn {
-            width: 100%;
-            padding: 18px;
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            background-color: #555555;
-            border: none;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .stop-btn:active {
-            opacity: 0.8;
-            transform: scale(0.98);
-        }
-
-        .instructions {
-            margin-top: auto;
-            padding-top: 24px;
-            text-align: center;
-            font-size: 15px;
-            color: #777;
-            max-width: 500px;
-            line-height: 1.5;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>香港電台</h1>
-        <div class="subtitle">RTHK</div>
-    </header>
-
-    <div class="status-card" id="statusCard">
-        <div class="status-title" id="currentChannel">請選擇電台</div>
-        <div class="status-state" id="currentState">按下下方按鈕即可播放</div>
-    </div>
-
-    <div class="grid-container">
-        <button class="channel-btn" onclick="playChannel(event, 1, '第一台', '新聞、時事、知識', 'https://rthkradio1-live.akamaized.net/hls/live/2035313/radio1/master.m3u8')">
-            <div class="channel-info">
-                <span class="channel-name">第一台</span>
-                <span class="channel-desc">FM 92.6 - 94.4 (新聞與時事)</span>
-            </div>
-            <div class="play-icon" id="icon-1">▶</div>
-        </button>
-
-        <button class="channel-btn" onclick="playChannel(event, 2, '第二台', '娛樂、青年、家庭', 'https://rthkradio2-live.akamaized.net/hls/live/2040078/radio2/master.m3u8')">
-            <div class="channel-info">
-                <span class="channel-name">第二台</span>
-                <span class="channel-desc">FM 94.8 - 96.9 (流行音樂與家庭)</span>
-            </div>
-            <div class="play-icon" id="icon-2">▶</div>
-        </button>
-
-        <button class="channel-btn" onclick="playChannel(event, 3, '第三台', '英文廣播頻道', 'https://rthkradio3-live.akamaized.net/hls/live/2040079/radio3/master.m3u8')">
-            <div class="channel-info">
-                <span class="channel-name">第三台</span>
-                <span class="channel-desc">AM 567 / FM 106.8 (英文台)</span>
-            </div>
-            <div class="play-icon" id="icon-3">▶</div>
-        </button>
-
-        <button class="channel-btn" onclick="playChannel(event, 4, '第四台', '古典音樂、藝術', 'https://rthkradio4-live.akamaized.net/hls/live/2040080/radio4/master.m3u8')">
-            <div class="channel-info">
-                <span class="channel-name">第四台</span>
-                <span class="channel-desc">FM 97.6 - 98.9 (古典音樂與藝術)</span>
-            </div>
-            <div class="play-icon" id="icon-4">▶</div>
-        </button>
-
-        <button class="channel-btn" onclick="playChannel(event, 5, '第五台', '長者、文化、戲曲', 'https://rthkradio5-live.akamaized.net/hls/live/2040081/radio5/master.m3u8')">
-            <div class="channel-info">
-                <span class="channel-name">第五台</span>
-                <span class="channel-desc">AM 783 / FM 106.9 (長者與戲曲)</span>
-            </div>
-            <div class="play-icon" id="icon-5">▶</div>
-        </button>
-    </div>
-
-    <div class="controls">
-        <button class="stop-btn" onclick="stopAudio()">⏹ 停止播放</button>
-    </div>
-
-    <div class="instructions">
-        💡 <b>提示：</b>點擊 Safari 箭頭/分享按鈕，選擇<b>「加入主畫面」</b>，即可變身成 APP 放在桌面！
-    </div>
-
-    <audio id="audioPlayer" playsinline preload="none"></audio>
-
-    <script>
-        const audio = document.getElementById('audioPlayer');
-        const statusCard = document.getElementById('statusCard');
-        const currentChannelEl = document.getElementById('currentChannel');
-        const currentStateEl = document.getElementById('currentState');
-        let activeId = null;
-
-        function playChannel(e, id, name, desc, url) {
-            document.querySelectorAll('.channel-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.play-icon').forEach(icon => icon.textContent = '▶');
-
-            const currentBtn = e.currentTarget;
-            currentBtn.classList.add('active');
-            document.getElementById(`icon-${id}`).textContent = '🔊';
-
-            currentChannelEl.textContent = `香港電台 ${name}`;
-            currentStateEl.textContent = "連線中，請稍候...";
-            statusCard.classList.remove('playing');
-
-            activeId = id;
-            audio.src = url;
-            
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    currentStateEl.textContent = "正在播放中 🟢";
-                    statusCard.classList.add('playing');
-                }).catch(error => {
-                    console.error("Play error:", error);
-                    currentStateEl.textContent = "播放失敗，請再按一次或檢查網絡";
-                    statusCard.classList.remove('playing');
-                });
-            }
-        }
-
-        function stopAudio() {
-            audio.pause();
-            audio.removeAttribute('src');
-            audio.load();
-            
-            activeId = null;
-            document.querySelectorAll('.channel-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.play-icon').forEach(icon => icon.textContent = '▶');
-
-            currentChannelEl.textContent = "已停止播放";
-            currentStateEl.textContent = "請選擇上方電台播放";
-            statusCard.classList.remove('playing');
-        }
-
-        audio.addEventListener('pause', () => {
-            if (activeId && !audio.ended) {
-                currentStateEl.textContent = "已暫停";
-                statusCard.classList.remove('playing');
-            }
-        });
-
-        audio.addEventListener('playing', () => {
-            currentStateEl.textContent = "正在播放中 🟢";
-            statusCard.classList.add('playing');
-        });
-
-        audio.addEventListener('error', () => {
-            currentStateEl.textContent = "連線失敗，請再試一次";
-            statusCard.classList.remove('playing');
-        });
-    </script>
-</body>
-</html>
+        :
