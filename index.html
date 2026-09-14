@@ -97,6 +97,28 @@
             color: #1565c0;
         }
 
+        /* 影片播放區 */
+        .video-container {
+            width: 100%;
+            max-width: 400px;
+            display: none;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: var(--shadow);
+        }
+        .video-container.show {
+            display: block;
+        }
+        #mediaPlayer {
+            width: 100%;
+            height: auto;
+            max-height: 225px; /* 適合 iPhone 6 Plus */
+            display: block;
+            background: #000;
+        }
+
         .status-card {
             background: var(--card-bg);
             width: 100%;
@@ -277,6 +299,9 @@
                 font-size: 15px;
                 margin-bottom: 10px;
             }
+            #mediaPlayer {
+                max-height: 200px;
+            }
         }
     </style>
 </head>
@@ -285,6 +310,11 @@
     <div class="theme-bar">
         <button class="theme-btn active-pink" id="btnPink" onclick="setTheme('pink')">🌸 粉紅</button>
         <button class="theme-btn" id="btnBlue" onclick="setTheme('blue')">💙 淺藍</button>
+    </div>
+
+    <!-- 影片播放區（預設隱藏） -->
+    <div class="video-container" id="videoContainer">
+        <video id="mediaPlayer" playsinline webkit-playsinline controls></video>
     </div>
 
     <div class="status-card" id="statusCard">
@@ -296,35 +326,35 @@
 
     <div class="section-title">香港電台</div>
     <div class="grid-container">
-        <button class="channel-btn" onclick="playChannel(event, 1, '第一台', 'https://rthkradio1-live.akamaized.net/hls/live/2035313/radio1/master.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 1, '第一台', 'https://rthkradio1-live.akamaized.net/hls/live/2035313/radio1/master.m3u8', false)">
             <div class="channel-info">
                 <span class="channel-name">第一台</span>
                 <span class="channel-desc">新聞與時事</span>
             </div>
             <div class="play-icon" id="icon-1">▶</div>
         </button>
-        <button class="channel-btn" onclick="playChannel(event, 2, '第二台', 'https://rthkradio2-live.akamaized.net/hls/live/2040078/radio2/master.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 2, '第二台', 'https://rthkradio2-live.akamaized.net/hls/live/2040078/radio2/master.m3u8', false)">
             <div class="channel-info">
                 <span class="channel-name">第二台</span>
                 <span class="channel-desc">流行音樂</span>
             </div>
             <div class="play-icon" id="icon-2">▶</div>
         </button>
-        <button class="channel-btn" onclick="playChannel(event, 3, '第三台', 'https://rthkradio3-live.akamaized.net/hls/live/2040079/radio3/master.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 3, '第三台', 'https://rthkradio3-live.akamaized.net/hls/live/2040079/radio3/master.m3u8', false)">
             <div class="channel-info">
                 <span class="channel-name">第三台</span>
                 <span class="channel-desc">英文台</span>
             </div>
             <div class="play-icon" id="icon-3">▶</div>
         </button>
-        <button class="channel-btn" onclick="playChannel(event, 4, '第四台', 'https://rthkradio4-live.akamaized.net/hls/live/2040080/radio4/master.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 4, '第四台', 'https://rthkradio4-live.akamaized.net/hls/live/2040080/radio4/master.m3u8', false)">
             <div class="channel-info">
                 <span class="channel-name">第四台</span>
                 <span class="channel-desc">古典音樂</span>
             </div>
             <div class="play-icon" id="icon-4">▶</div>
         </button>
-        <button class="channel-btn" onclick="playChannel(event, 5, '第五台', 'https://rthkradio5-live.akamaized.net/hls/live/2040081/radio5/master.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 5, '第五台', 'https://rthkradio5-live.akamaized.net/hls/live/2040081/radio5/master.m3u8', false)">
             <div class="channel-info">
                 <span class="channel-name">第五台</span>
                 <span class="channel-desc">長者與戲曲</span>
@@ -334,17 +364,16 @@
         <div></div>
     </div>
 
-    <!-- 新增港台電視 -->
     <div class="section-title">港台電視</div>
     <div class="grid-container">
-        <button class="channel-btn" onclick="playChannel(event, 9, 'RTHK 31', 'https://rthktv31-live.akamaized.net/hls/live/2036818/RTHKTV31/master.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 9, 'RTHK 31', 'https://rthktv31-live.akamaized.net/hls/live/2036818/RTHKTV31/master.m3u8', true)">
             <div class="channel-info">
                 <span class="channel-name">RTHK 31</span>
                 <span class="channel-desc">港台電視31</span>
             </div>
             <div class="play-icon" id="icon-9">▶</div>
         </button>
-        <button class="channel-btn" onclick="playChannel(event, 10, 'RTHK 32', 'https://rthktv32-live.akamaized.net/hls/live/2036819/RTHKTV32/master.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 10, 'RTHK 32', 'https://rthktv32-live.akamaized.net/hls/live/2036819/RTHKTV32/master.m3u8', true)">
             <div class="channel-info">
                 <span class="channel-name">RTHK 32</span>
                 <span class="channel-desc">港台電視32</span>
@@ -355,14 +384,14 @@
 
     <div class="section-title">新城電台</div>
     <div class="grid-container">
-        <button class="channel-btn" onclick="playChannel(event, 6, '知訊台 997', 'https://1603884249.rsc.cdn77.org/1603884249/index.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 6, '知訊台 997', 'https://1603884249.rsc.cdn77.org/1603884249/index.m3u8', false)">
             <div class="channel-info">
                 <span class="channel-name">知訊台 997</span>
                 <span class="channel-desc">資訊・音樂</span>
             </div>
             <div class="play-icon" id="icon-6">▶</div>
         </button>
-        <button class="channel-btn" onclick="playChannel(event, 7, '財經台 104', 'https://1716664847.rsc.cdn77.org/1716664847/index.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 7, '財經台 104', 'https://1716664847.rsc.cdn77.org/1716664847/index.m3u8', false)">
             <div class="channel-info">
                 <span class="channel-name">財經台 104</span>
                 <span class="channel-desc">財經・股市</span>
@@ -391,7 +420,7 @@
 
     <div class="section-title">新聞台</div>
     <div class="grid-container">
-        <button class="channel-btn" onclick="playChannel(event, 8, 'HOY 新聞台', 'https://hoytv-live-stream.hoy.tv/ch78/index.m3u8')">
+        <button class="channel-btn" onclick="playChannel(event, 8, 'HOY 新聞台', 'https://hoytv-live-stream.hoy.tv/ch78/index.m3u8', true)">
             <div class="channel-info">
                 <span class="channel-name">HOY 新聞台</span>
                 <span class="channel-desc">有線新聞・78台</span>
@@ -422,10 +451,9 @@
         <span class="line">😌 by DL🎵</span>
     </div>
 
-    <audio id="audioPlayer" playsinline preload="none"></audio>
-
     <script>
-        const audio = document.getElementById('audioPlayer');
+        const media = document.getElementById('mediaPlayer');
+        const videoContainer = document.getElementById('videoContainer');
         const statusCard = document.getElementById('statusCard');
         const currentChannelEl = document.getElementById('currentChannel');
         const currentStateEl = document.getElementById('currentState');
@@ -460,7 +488,7 @@
             }
         }
 
-        function playChannel(e, id, name, url) {
+        function playChannel(e, id, name, url, isVideo = false) {
             document.querySelectorAll('.channel-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.play-icon').forEach(icon => {
                 if (icon.textContent !== '↗') icon.textContent = '▶';
@@ -476,10 +504,17 @@
 
             activeId = id;
 
+            // 顯示 / 隱藏影片區
+            if (isVideo) {
+                videoContainer.classList.add('show');
+            } else {
+                videoContainer.classList.remove('show');
+            }
+
             destroyHls();
-            audio.pause();
-            audio.removeAttribute('src');
-            audio.load();
+            media.pause();
+            media.removeAttribute('src');
+            media.load();
 
             if (Hls.isSupported()) {
                 hls = new Hls({
@@ -488,10 +523,10 @@
                     backBufferLength: 90
                 });
                 hls.loadSource(url);
-                hls.attachMedia(audio);
+                hls.attachMedia(media);
 
                 hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                    const playPromise = audio.play();
+                    const playPromise = media.play();
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
                             currentStateEl.textContent = "正在播放中 🟢";
@@ -511,9 +546,9 @@
                     }
                 });
 
-            } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
-                audio.src = url;
-                const playPromise = audio.play();
+            } else if (media.canPlayType('application/vnd.apple.mpegurl')) {
+                media.src = url;
+                const playPromise = media.play();
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
                         currentStateEl.textContent = "正在播放中 🟢";
@@ -538,10 +573,12 @@
 
         function stopAudio() {
             destroyHls();
-            audio.pause();
-            audio.removeAttribute('src');
-            audio.load();
+            media.pause();
+            media.removeAttribute('src');
+            media.load();
             activeId = null;
+
+            videoContainer.classList.remove('show');
 
             document.querySelectorAll('.channel-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.play-icon').forEach(icon => {
@@ -552,17 +589,17 @@
             statusCard.classList.remove('playing');
         }
 
-        audio.addEventListener('pause', () => {
-            if (activeId && !audio.ended) {
+        media.addEventListener('pause', () => {
+            if (activeId && !media.ended) {
                 currentStateEl.textContent = "已暫停";
                 statusCard.classList.remove('playing');
             }
         });
-        audio.addEventListener('playing', () => {
+        media.addEventListener('playing', () => {
             currentStateEl.textContent = "正在播放中 🟢";
             statusCard.classList.add('playing');
         });
-        audio.addEventListener('error', () => {
+        media.addEventListener('error', () => {
             currentStateEl.textContent = "連線失敗，請再試一次";
             statusCard.classList.remove('playing');
         });
