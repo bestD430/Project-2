@@ -40,8 +40,8 @@
 
     <style>
         :root {
-            --bg-color: #f5c6d0;          /* 電視頻道用（較淺） */
-            --bg-radio: #e8a8b6;          /* 電台用（加深約20%） */
+            --bg-color: #f5c6d0;
+            --bg-radio: #e8a8b6;
             --card-bg: #ffffff;
             --text-main: #1a1a1a;
             --text-sub: #555555;
@@ -51,7 +51,7 @@
         }
         body.theme-blue {
             --bg-color: #9fc8e8;
-            --bg-radio: #7eb0d6;          /* 藍色主題加深版 */
+            --bg-radio: #7eb0d6;
         }
         body.theme-pink {
             --bg-color: #f5c6d0;
@@ -174,7 +174,6 @@
             transform: scale(0.98);
         }
 
-        /* 電台區域（加深底色） */
         .radio-section {
             width: 100%;
             max-width: 400px;
@@ -246,6 +245,15 @@
             font-size: 14px;
             font-weight: 800;
             line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .channel-name .icon {
+            font-size: 15px;
+            flex-shrink: 0;
+            width: 18px;
+            text-align: center;
         }
         .channel-desc {
             font-size: 10px;
@@ -253,6 +261,7 @@
             font-weight: 500;
             margin-top: 2px;
             line-height: 1.25;
+            padding-left: 23px; /* 與台名文字對齊（icon 寬度 + gap） */
         }
 
         .play-icon {
@@ -325,6 +334,9 @@
             #mediaPlayer {
                 max-height: 200px;
             }
+            .channel-desc {
+                padding-left: 22px;
+            }
         }
     </style>
 </head>
@@ -346,41 +358,41 @@
 
     <button class="stop-btn" onclick="stopAudio()">⏹ 停止播放</button>
 
-    <!-- 電台區域（底色加深） -->
+    <!-- 電台區域 -->
     <div class="radio-section">
         <div class="section-title">香港電台</div>
         <div class="grid-container">
             <button class="channel-btn" onclick="playChannel(event, 1, '第一台', 'https://rthkradio1-live.akamaized.net/hls/live/2035313/radio1/master.m3u8', false)">
                 <div class="channel-info">
-                    <span class="channel-name">第一台</span>
+                    <span class="channel-name"><span class="icon">📻</span>第一台</span>
                     <span class="channel-desc">新聞與時事</span>
                 </div>
                 <div class="play-icon" id="icon-1">▶</div>
             </button>
             <button class="channel-btn" onclick="playChannel(event, 2, '第二台', 'https://rthkradio2-live.akamaized.net/hls/live/2040078/radio2/master.m3u8', false)">
                 <div class="channel-info">
-                    <span class="channel-name">第二台</span>
+                    <span class="channel-name"><span class="icon">📻</span>第二台</span>
                     <span class="channel-desc">流行音樂</span>
                 </div>
                 <div class="play-icon" id="icon-2">▶</div>
             </button>
             <button class="channel-btn" onclick="playChannel(event, 3, '第三台', 'https://rthkradio3-live.akamaized.net/hls/live/2040079/radio3/master.m3u8', false)">
                 <div class="channel-info">
-                    <span class="channel-name">第三台</span>
+                    <span class="channel-name"><span class="icon">📻</span>第三台</span>
                     <span class="channel-desc">英文台</span>
                 </div>
                 <div class="play-icon" id="icon-3">▶</div>
             </button>
             <button class="channel-btn" onclick="playChannel(event, 4, '第四台', 'https://rthkradio4-live.akamaized.net/hls/live/2040080/radio4/master.m3u8', false)">
                 <div class="channel-info">
-                    <span class="channel-name">第四台</span>
+                    <span class="channel-name"><span class="icon">📻</span>第四台</span>
                     <span class="channel-desc">古典音樂</span>
                 </div>
                 <div class="play-icon" id="icon-4">▶</div>
             </button>
             <button class="channel-btn" onclick="playChannel(event, 5, '第五台', 'https://rthkradio5-live.akamaized.net/hls/live/2040081/radio5/master.m3u8', false)">
                 <div class="channel-info">
-                    <span class="channel-name">第五台</span>
+                    <span class="channel-name"><span class="icon">📻</span>第五台</span>
                     <span class="channel-desc">長者與戲曲</span>
                 </div>
                 <div class="play-icon" id="icon-5">▶</div>
@@ -392,14 +404,14 @@
         <div class="grid-container">
             <button class="channel-btn" onclick="playChannel(event, 6, '知訊台 997', 'https://1603884249.rsc.cdn77.org/1603884249/index.m3u8', false)">
                 <div class="channel-info">
-                    <span class="channel-name">知訊台 997</span>
+                    <span class="channel-name"><span class="icon">📻</span>知訊台 997</span>
                     <span class="channel-desc">資訊・音樂</span>
                 </div>
                 <div class="play-icon" id="icon-6">▶</div>
             </button>
             <button class="channel-btn" onclick="playChannel(event, 7, '財經台 104', 'https://1716664847.rsc.cdn77.org/1716664847/index.m3u8', false)">
                 <div class="channel-info">
-                    <span class="channel-name">財經台 104</span>
+                    <span class="channel-name"><span class="icon">📻</span>財經台 104</span>
                     <span class="channel-desc">財經・股市</span>
                 </div>
                 <div class="play-icon" id="icon-7">▶</div>
@@ -410,14 +422,14 @@
         <div class="grid-container">
             <button class="channel-btn link-btn" onclick="openOfficial('https://www.881903.com/live/881')">
                 <div class="channel-info">
-                    <span class="channel-name">雷霆881</span>
+                    <span class="channel-name"><span class="icon">📻</span>雷霆881</span>
                     <span class="channel-desc">官方直播頁</span>
                 </div>
                 <div class="play-icon">↗</div>
             </button>
             <button class="channel-btn link-btn" onclick="openOfficial('https://www.881903.com/live/903')">
                 <div class="channel-info">
-                    <span class="channel-name">叱咤903</span>
+                    <span class="channel-name"><span class="icon">📻</span>叱咤903</span>
                     <span class="channel-desc">官方直播頁</span>
                 </div>
                 <div class="play-icon">↗</div>
@@ -425,40 +437,40 @@
         </div>
     </div>
 
-    <!-- 電視頻道（較淺底色） -->
+    <!-- 電視頻道 -->
     <div class="section-title">電視頻道</div>
     <div class="grid-container">
         <button class="channel-btn" onclick="playChannel(event, 9, 'RTHK 31', 'https://rthktv31-live.akamaized.net/hls/live/2036818/RTHKTV31/master.m3u8', true)">
             <div class="channel-info">
-                <span class="channel-name">RTHK 31</span>
+                <span class="channel-name"><span class="icon">📺</span>RTHK 31</span>
                 <span class="channel-desc">港台電視31</span>
             </div>
             <div class="play-icon" id="icon-9">▶</div>
         </button>
         <button class="channel-btn" onclick="playChannel(event, 10, 'RTHK 32', 'https://rthktv32-live.akamaized.net/hls/live/2036819/RTHKTV32/master.m3u8', true)">
             <div class="channel-info">
-                <span class="channel-name">RTHK 32</span>
+                <span class="channel-name"><span class="icon">📺</span>RTHK 32</span>
                 <span class="channel-desc">港台電視32</span>
             </div>
             <div class="play-icon" id="icon-10">▶</div>
         </button>
         <button class="channel-btn link-btn" onclick="openOfficial('https://hoy.tv/live?channel_no=78')">
             <div class="channel-info">
-                <span class="channel-name">HOY 新聞台</span>
+                <span class="channel-name"><span class="icon">📺</span>HOY 新聞台</span>
                 <span class="channel-desc">官方直播頁・78台</span>
             </div>
             <div class="play-icon">↗</div>
         </button>
         <button class="channel-btn link-btn" onclick="openOfficial('https://news.tvb.com/tc/live/C')">
             <div class="channel-info">
-                <span class="channel-name">無線新聞台</span>
+                <span class="channel-name"><span class="icon">📺</span>無線新聞台</span>
                 <span class="channel-desc">官方直播頁</span>
             </div>
             <div class="play-icon">↗</div>
         </button>
         <button class="channel-btn link-btn" onclick="openOfficial('https://www.viu.tv/live')">
             <div class="channel-info">
-                <span class="channel-name">ViuTV</span>
+                <span class="channel-name"><span class="icon">📺</span>ViuTV</span>
                 <span class="channel-desc">官方直播頁・99台</span>
             </div>
             <div class="play-icon">↗</div>
