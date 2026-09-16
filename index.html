@@ -62,7 +62,7 @@
 
         body {
             margin: 0;
-            padding: calc(env(safe-area-inset-top) + 10px) 10px calc(env(safe-area-inset-bottom) + 10px) 10px;
+            padding: calc(env(safe-area-inset-top) + 8px) 10px calc(env(safe-area-inset-bottom) + 8px) 10px;
             font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
@@ -77,17 +77,17 @@
 
         .theme-bar {
             width: 100%;
-            max-width: 400px;
+            max-width: 414px;
             display: flex;
             justify-content: center;
             gap: 6px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .theme-btn {
             border: 2px solid #ddd;
             background: #fff;
-            border-radius: 18px;
-            padding: 5px 12px;
+            border-radius: 16px;
+            padding: 4px 11px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
@@ -106,9 +106,9 @@
 
         .video-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 414px;
             display: none;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-radius: 12px;
             overflow: hidden;
             background: #000;
@@ -120,7 +120,7 @@
         #mediaPlayer {
             width: 100%;
             height: auto;
-            max-height: 225px;
+            max-height: 200px;
             display: block;
             background: #000;
         }
@@ -128,11 +128,11 @@
         .status-card {
             background: var(--card-bg);
             width: 100%;
-            max-width: 400px;
-            padding: 11px 14px;
-            border-radius: 14px;
+            max-width: 414px;
+            padding: 10px 12px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-align: center;
             border: 2.5px solid transparent;
             transition: all 0.3s ease;
@@ -142,12 +142,12 @@
             background: #f1f8e9;
         }
         .status-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             margin-bottom: 1px;
         }
         .status-state {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: var(--text-sub);
         }
@@ -157,17 +157,17 @@
 
         .stop-btn {
             width: 100%;
-            max-width: 400px;
-            padding: 12px;
-            font-size: 16px;
+            max-width: 414px;
+            padding: 11px;
+            font-size: 15px;
             font-weight: bold;
             color: white;
             background: #555;
             border: none;
-            border-radius: 12px;
+            border-radius: 11px;
             box-shadow: var(--shadow);
             cursor: pointer;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .stop-btn:active {
             opacity: 0.85;
@@ -176,43 +176,43 @@
 
         .radio-section {
             width: 100%;
-            max-width: 400px;
+            max-width: 414px;
             background: var(--bg-radio);
-            border-radius: 16px;
-            padding: 12px 10px 6px;
-            margin-bottom: 12px;
+            border-radius: 14px;
+            padding: 10px 8px 4px;
+            margin-bottom: 10px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
 
         .section-title {
             width: 100%;
-            max-width: 400px;
-            font-size: 17px;
+            max-width: 414px;
+            font-size: 15px;
             font-weight: 800;
             color: #555;
-            margin: 4px 0 8px 2px;
+            margin: 2px 0 6px 2px;
         }
         .radio-section .section-title {
-            margin-top: 2px;
+            margin-top: 0;
         }
 
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 7px;
             width: 100%;
-            max-width: 400px;
-            margin-bottom: 10px;
+            max-width: 414px;
+            margin-bottom: 8px;
         }
         .radio-section .grid-container {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .channel-btn {
             background: var(--card-bg);
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 10px 10px;
+            border-radius: 11px;
+            padding: 8px 9px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -220,7 +220,7 @@
             cursor: pointer;
             box-shadow: var(--shadow);
             text-align: left;
-            min-height: 62px;
+            min-height: 56px;
             transition: transform 0.1s, border-color 0.2s, background 0.2s;
         }
         .channel-btn:active {
@@ -239,41 +239,41 @@
             flex-direction: column;
             flex: 1;
             min-width: 0;
-            padding-right: 6px;
+            padding-right: 5px;
         }
         .channel-name {
-            font-size: 17px;          /* +20% */
+            font-size: 15px;
             font-weight: 800;
             line-height: 1.2;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
         .channel-name .icon {
-            font-size: 15px;
+            font-size: 14px;
             flex-shrink: 0;
-            width: 18px;
+            width: 17px;
             text-align: center;
         }
         .channel-desc {
             font-size: 10px;
             color: var(--text-sub);
             font-weight: 500;
-            margin-top: 2px;
-            line-height: 1.25;
-            padding-left: 23px;
+            margin-top: 1px;
+            line-height: 1.2;
+            padding-left: 21px;
         }
 
         .play-icon {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: var(--accent-red);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             flex-shrink: 0;
         }
@@ -282,17 +282,17 @@
         }
         .channel-btn.link-btn .play-icon {
             background: #666;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .instructions {
             margin-top: auto;
-            padding-top: 12px;
+            padding-top: 10px;
             text-align: center;
             font-size: 11px;
             color: #777;
-            max-width: 400px;
-            line-height: 1.55;
+            max-width: 414px;
+            line-height: 1.5;
         }
         .instructions .line {
             display: block;
@@ -303,39 +303,62 @@
             margin-top: 2px;
         }
 
+        /* iPhone 6 Plus 專用優化 (414px) */
         @media screen and (max-width: 420px) {
             body {
-                padding: calc(env(safe-area-inset-top) + 8px) 8px calc(env(safe-area-inset-bottom) + 8px) 8px;
+                padding: calc(env(safe-area-inset-top) + 6px) 8px calc(env(safe-area-inset-bottom) + 6px) 8px;
+            }
+            .theme-bar {
+                margin-bottom: 6px;
+            }
+            .theme-btn {
+                padding: 4px 10px;
+                font-size: 11px;
             }
             .grid-container {
-                gap: 7px;
+                gap: 6px;
             }
             .channel-btn {
-                min-height: 58px;
-                padding: 8px 9px;
+                min-height: 52px;
+                padding: 7px 8px;
             }
             .channel-name {
-                font-size: 16px;      /* +20% */
-            }
-            .play-icon {
-                width: 30px;
-                height: 30px;
-                font-size: 12px;
-            }
-            .section-title {
-                font-size: 16px;
-                margin: 3px 0 7px 1px;
-            }
-            .stop-btn {
-                padding: 11px;
-                font-size: 15px;
-                margin-bottom: 10px;
-            }
-            #mediaPlayer {
-                max-height: 200px;
+                font-size: 14.5px;
             }
             .channel-desc {
-                padding-left: 22px;
+                font-size: 9.5px;
+                padding-left: 20px;
+            }
+            .play-icon {
+                width: 26px;
+                height: 26px;
+                font-size: 11px;
+            }
+            .section-title {
+                font-size: 14.5px;
+                margin: 2px 0 5px 1px;
+            }
+            .stop-btn {
+                padding: 10px;
+                font-size: 14.5px;
+                margin-bottom: 8px;
+            }
+            #mediaPlayer {
+                max-height: 180px;
+            }
+            .status-card {
+                padding: 9px 11px;
+                margin-bottom: 7px;
+            }
+            .status-title {
+                font-size: 14.5px;
+            }
+            .status-state {
+                font-size: 11.5px;
+            }
+            .radio-section {
+                padding: 8px 7px 3px;
+                margin-bottom: 8px;
             }
         }
     </style>
@@ -481,7 +504,7 @@
     <div class="instructions">
         <span class="line">iPhone：Safari 分享 →「加入主畫面」</span>
         <span class="line">Android：Chrome 選單 →「加入主畫面」</span>
-        <span class="line note">HK Radio V1.1 · 適配 iPhone 6 Plus</span>
+        <span class="line note">HK Radio V1.2 · 適配 iPhone 6 Plus</span>
         <span class="line">😌 by DL🎵</span>
     </div>
 
