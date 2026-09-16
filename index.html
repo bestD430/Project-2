@@ -198,7 +198,7 @@
 
         .grid-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;   /* 改為一行 3 個 */
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 6px;
             width: 100%;
             max-width: 414px;
@@ -212,7 +212,7 @@
             background: var(--card-bg);
             border: 2px solid #e0e0e0;
             border-radius: 11px;
-            padding: 7px 6px;
+            padding: 6px 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -220,7 +220,7 @@
             cursor: pointer;
             box-shadow: var(--shadow);
             text-align: center;
-            min-height: 68px;
+            min-height: 66px;
             transition: transform 0.1s, border-color 0.2s, background 0.2s;
         }
         .channel-btn:active {
@@ -238,22 +238,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1;
-            min-width: 0;
             width: 100%;
         }
         .channel-name {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 800;
             line-height: 1.2;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 2px;
-            width: 100%;
         }
         .channel-name .icon {
-            font-size: 13px;
+            font-size: 12px;
             flex-shrink: 0;
         }
         .channel-desc {
@@ -266,25 +263,25 @@
         }
 
         .play-icon {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: var(--accent-red);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
-            flex-shrink: 0;
             margin-top: 4px;
+            flex-shrink: 0;
         }
         .channel-btn.active .play-icon {
             background: var(--accent-green);
         }
         .channel-btn.link-btn .play-icon {
             background: #666;
-            font-size: 10px;
+            font-size: 9px;
         }
 
         .instructions {
@@ -305,7 +302,6 @@
             margin-top: 2px;
         }
 
-        /* iPhone 6 Plus 專用優化 (414px) */
         @media screen and (max-width: 420px) {
             body {
                 padding: calc(env(safe-area-inset-top) + 6px) 8px calc(env(safe-area-inset-bottom) + 6px) 8px;
@@ -321,19 +317,19 @@
                 gap: 5px;
             }
             .channel-btn {
-                min-height: 64px;
-                padding: 6px 5px;
+                min-height: 62px;
+                padding: 5px 4px;
             }
             .channel-name {
-                font-size: 12.5px;
+                font-size: 12px;
             }
             .channel-desc {
                 font-size: 8.5px;
             }
             .play-icon {
-                width: 20px;
-                height: 20px;
-                font-size: 9px;
+                width: 18px;
+                height: 18px;
+                font-size: 8px;
             }
             .section-title {
                 font-size: 14.5px;
@@ -507,7 +503,7 @@
     <div class="instructions">
         <span class="line">iPhone：Safari 分享 →「加入主畫面」</span>
         <span class="line">Android：Chrome 選單 →「加入主畫面」</span>
-        <span class="line note">HK Radio V1.3 · 一行三個頻道</span>
+        <span class="line note">HK Radio V1.3 · 每列 3 個頻道</span>
         <span class="line">😌 by DL🎵</span>
     </div>
 
